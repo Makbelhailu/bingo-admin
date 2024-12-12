@@ -1,5 +1,5 @@
 "use client";
-import { Calendar, Home, Users, Search, LogOut } from "lucide-react";
+import { Calendar, Home, Users, Search, LogOut, ChartBar } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -34,14 +34,19 @@ const items = [
     icon: Users,
   },
   {
-    title: "Calendar",
-    url: "/",
+    title: "Cartela",
+    url: "/cartela",
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "/",
+    title: "Games",
+    url: "/games",
     icon: Search,
+  },
+  {
+    title: "Weekly Report",
+    url: "/weekly-report",
+    icon: ChartBar,
   },
   {
     title: "LogOut",

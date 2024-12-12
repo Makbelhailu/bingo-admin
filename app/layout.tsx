@@ -2,8 +2,13 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
-const outfit = Outfit({ subsets: ["latin"] });
+const outfit = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +31,7 @@ export default function RootLayout({
       <body className={outfit.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
