@@ -47,7 +47,7 @@ export const authOptions: AuthOptions = {
         secure: process.env.NODE_ENV === "production",
         path: "/",
         sameSite: "lax",
-        maxAge: undefined,
+        maxAge: 60 * 60 * 24,
       },
     },
   },

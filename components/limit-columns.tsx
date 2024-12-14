@@ -24,11 +24,8 @@ export const riskColumns: ColumnDef<RiskUser>[] = [
     header: "Limit",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("limit"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "ETB",
-      }).format(amount);
-      return <div className="font-medium">{formatted}</div>;
+
+      return <div className="font-medium">${amount.toLocaleString()}</div>;
     },
   },
   {
@@ -37,9 +34,9 @@ export const riskColumns: ColumnDef<RiskUser>[] = [
     cell: ({ row }) => {
       const risk = row.getValue("risk") as "High" | "Medium" | "Low";
       const variant = {
-        High: "secondary",
-        Medium: "default",
-        Low: "destructive",
+        High: "destructive",
+        Medium: "secondary",
+        Low: "default",
       }[risk] as "destructive" | "secondary" | "default";
 
       return <Badge variant={variant}>{risk}</Badge>;

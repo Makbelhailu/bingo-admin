@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import ToolTip from "@/components/toolTip";
 
 export type User = {
   id: number;
@@ -63,7 +64,7 @@ export const usersColumns: ColumnDef<User>[] = [
       const cut = parseFloat(row.getValue("cut"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "percent",
-        minimumFractionDigits: 2,
+        minimumFractionDigits: 0,
         maximumFractionDigits: 2,
       }).format(cut);
       return <div className="font-medium">{formatted}</div>;
@@ -76,7 +77,7 @@ export const usersColumns: ColumnDef<User>[] = [
       const houseCut = parseFloat(row.getValue("houseCut"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "percent",
-        minimumFractionDigits: 2,
+        minimumFractionDigits: 0,
         maximumFractionDigits: 2,
       }).format(houseCut);
       return <div className="font-medium">{formatted}</div>;
@@ -87,16 +88,29 @@ export const usersColumns: ColumnDef<User>[] = [
     header: "Limit",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("limit"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "ETB",
-      }).format(amount);
-      return <div className="font-medium">{formatted}</div>;
+
+      return <div className="font-medium">${amount.toLocaleString()}</div>;
     },
   },
   {
     accessorKey: "cartela",
     header: "Cartela",
+    cell: ({ row }) => {
+      const cartela = row.getValue("cartela") as string | null;
+      return (
+        <ToolTip
+          trigger={
+            <Badge
+              className="cursor-default"
+              variant={cartela ? "default" : "outline"}
+            >
+              {cartela ? "Own" : "Default"}
+            </Badge>
+          }
+          content={cartela ? cartela : "Default"}
+        />
+      );
+    },
   },
   {
     accessorKey: "status",

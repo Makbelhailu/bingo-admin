@@ -1,15 +1,13 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   UserIcon,
   DollarSignIcon,
-  AlertTriangleIcon,
   ActivityIcon,
+  Calendar1Icon,
 } from "lucide-react";
-import { defaultMetrics } from "@/lib/default-data";
-import { useToast } from "@/hooks/use-toast";
+
+import ServerToast from "@/components/serverToast";
+import { fetchMetrics } from "@/lib/api";
 
 interface Metric {
   label: string;
@@ -18,87 +16,42 @@ interface Metric {
   color: string;
 }
 
-export function MetricCards() {
-  const [metrics, setMetrics] = useState<Metric[]>([
-    {
-      label: "Total Users",
-      value: defaultMetrics.totalUsers.toLocaleString(),
-      icon: UserIcon,
-      color: "text-blue-500",
-    },
-    {
-      label: "Total Bets",
-      value: new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(defaultMetrics.totalBets),
-      icon: DollarSignIcon,
-      color: "text-green-500",
-    },
-    {
-      label: "High Risk Users",
-      value: defaultMetrics.highRiskUsers.toLocaleString(),
-      icon: AlertTriangleIcon,
-      color: "text-red-500",
-    },
-    {
-      label: "Active Users",
-      value: defaultMetrics.activeUsers.toLocaleString(),
-      icon: ActivityIcon,
-      color: "text-yellow-500",
-    },
-  ]);
+const defaultData = [
+  {
+    label: "Total Users",
+    value: "-",
+    icon: UserIcon,
+    color: "text-blue-500",
+  },
+  {
+    label: "Total Plays",
+    value: "-",
+    icon: DollarSignIcon,
+    color: "text-green-500",
+  },
+  {
+    label: "No of Cartelas",
+    value: "-",
+    icon: Calendar1Icon,
+    color: "text-red-500",
+  },
+  {
+    label: "Active Users",
+    value: "-",
+    icon: ActivityIcon,
+    color: "text-yellow-500",
+  },
+];
 
-  const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const response = await fetch("/api/metrics");
-        if (!response.ok) {
-          throw new Error("Failed to fetch metrics");
-        }
-        const data = await response.json();
-        setMetrics([
-          {
-            label: "Total Users",
-            value: data.totalUsers.toLocaleString(),
-            icon: UserIcon,
-            color: "text-blue-500",
-          },
-          {
-            label: "Total Bets",
-            value: new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "ETB",
-            }).format(data.totalBets),
-            icon: DollarSignIcon,
-            color: "text-green-500",
-          },
-          {
-            label: "High Risk Users",
-            value: data.highRiskUsers.toLocaleString(),
-            icon: AlertTriangleIcon,
-            color: "text-red-500",
-          },
-          {
-            label: "Active Users",
-            value: data.activeUsers.toLocaleString(),
-            icon: ActivityIcon,
-            color: "text-yellow-500",
-          },
-        ]);
-      } catch (error: Error | any) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message,
-        });
-      }
-    };
-
-    fetchMetrics();
-  }, []);
+export async function MetricCards() {
+  let metrics: Metric[] = defaultData;
+  let toastMsg = null;
+  try {
+    metrics = await fetchMetrics();
+  } catch (error: Error | any) {
+    metrics = defaultData;
+    toastMsg = error.message;
+  }
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -120,6 +73,7 @@ export function MetricCards() {
           </CardContent>
         </Card>
       ))}
+      <ServerToast message={toastMsg} />
     </div>
   );
 }

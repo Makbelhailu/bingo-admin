@@ -14,7 +14,7 @@ export default async function Layout({
 
   if (!session) redirect("/login");
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <main className="w-full p-4">
         <div className="w-full flex items-center justify-between">
