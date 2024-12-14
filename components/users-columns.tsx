@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-
 import ToolTip from "@/components/toolTip";
 
 export type User = {
