@@ -36,6 +36,7 @@ const UserTable = () => {
 
   useEffect(() => {
     fetchUsers(usersPage, usersPageSize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersPage, usersPageSize]);
 
   return (

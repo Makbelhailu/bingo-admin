@@ -14,15 +14,19 @@ export default function ServerToast({
 }: ServerToastProps) {
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (message) {
-      toast({
-        title: variant === "destructive" ? "Error" : "Notification",
-        description: message,
-        variant: variant,
-      });
-    }
-  }, [message]);
+  useEffect(
+    () => {
+      if (message) {
+        toast({
+          title: variant === "destructive" ? "Error" : "Notification",
+          description: message,
+          variant: variant,
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [message]
+  );
 
   return null;
 }

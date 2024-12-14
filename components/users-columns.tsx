@@ -19,6 +19,27 @@ export type User = {
   status: boolean;
 };
 
+const PasswordCell = ({ password }: { password: string }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div className="flex items-center space-x-2">
+      <span>{showPassword ? password : "••••••••"}</span>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setShowPassword(!showPassword)}
+      >
+        {showPassword ? (
+          <EyeOffIcon className="h-4 w-4" />
+        ) : (
+          <EyeIcon className="h-4 w-4" />
+        )}
+      </Button>
+    </div>
+  );
+};
+
 export const usersColumns: ColumnDef<User>[] = [
   {
     accessorKey: "id",
@@ -36,25 +57,8 @@ export const usersColumns: ColumnDef<User>[] = [
     accessorKey: "password",
     header: "Password",
     cell: ({ row }) => {
-      const [showPassword, setShowPassword] = useState(false);
       const password = row.getValue("password") as string;
-
-      return (
-        <div className="flex items-center space-x-2">
-          <span>{showPassword ? password : "••••••••"}</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? (
-              <EyeOffIcon className="h-4 w-4" />
-            ) : (
-              <EyeIcon className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-      );
+      return <PasswordCell password={password} />;
     },
   },
   {

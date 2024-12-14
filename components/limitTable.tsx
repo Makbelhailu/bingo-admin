@@ -36,6 +36,7 @@ const LimitTable = () => {
 
   useEffect(() => {
     fetchLimitUsers(riskPage, riskPageSize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riskPage, riskPageSize]);
 
   return (
